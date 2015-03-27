@@ -1,0 +1,26 @@
+{
+  "name": "openmusic-piano-keyboard",
+  "version": "1.0.0",
+  "description": "a piano keyboard component to input notes with touch or mouse devices",
+  "main": "Piano-Keyboard.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openmusic/piano-keyboard"
+  },
+  "keywords": [
+    "piano keyboard",
+    "web",
+    "components",
+    "web",
+    "audio"
+  ],
+  "author": "sole",
+  "license": "Apache 2",
+  "bugs": {
+    "url": "https://github.com/openmusic/piano-keyboard/issues"
+  },
+  "homepage": "https://github.com/openmusic/piano-keyboard"
+}
