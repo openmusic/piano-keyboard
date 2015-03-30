@@ -52,7 +52,32 @@ Attribute for selecting how many octaves to render. Can be 1 or 2.
 
 ### Events
 
-TO DO
+Events are DOM events, additional data is in the `detail` field of each event.
+
+#### `noteon`
+
+detail: `index` containing the index of the pressed key (either by mouse or keyboard)
+
+E.g.
+
+```javascript
+keyboard.addEventListener('noteon', function(e) {
+	console.log('note on on key index: ', e.detail.index);
+});
+```
+
+#### `noteoff`
+
+detail: `index` containing the index of the released key (either by mouse or keyboard)
+
+E.g.
+
+```javascript
+keyboard.addEventListener('noteoff', function(e) {
+	console.log('note off on key index: ', e.detail.index);
+});
+```
+
 
 ## Demo
 
