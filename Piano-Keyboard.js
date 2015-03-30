@@ -3,6 +3,7 @@
 	var proto = Object.create(HTMLElement.prototype);
 
 	proto.createdCallback = function() {
+		this.pressedKeys = {};
 		this.keyClass = 'key';
 		this.keyBlackClass = 'key black';
 		this.keyboardLayout = 'ZSXDCVGBHNJMQ2W3ER5T6Y7U'.split('');
@@ -56,10 +57,13 @@
 					kb.appendChild( keyDiv );
 				}
 
+				var numKeys = kb.keys.length;
+				kb.pressedKeys[numKeys] = false;
+
 			}
 		}
 
-		// Even if we set tabIndex here, the browser is smart enough to
+		// Even if we set tabIndex=1 here, the browser is smart enough to
 		// let us cycle between keyboards when there's more than one on screen
 		// at the same time, by pressing TAB
 		kb.tabIndex = 1;
@@ -67,6 +71,7 @@
 		kb.addEventListener('keyup', makeCallback(kb, onKeyUp), false);
 	}
 
+	
 	function makeCallback(kb, fn) {
 
 		var cb = function(e) {
@@ -77,14 +82,10 @@
 
 	}
 
+
 	function onDivMouseDown( keyboard, ev ) {
 
-		if( keyboard.keyPressed ) {
-			return;
-		}
-
 		var key = ev.target;
-
 		dispatchNoteOn( keyboard, key.dataset.index );
 
 	}
@@ -93,10 +94,7 @@
 	function onDivMouseUp( keyboard, ev ) {
 
 		var key = ev.target;
-
-		if( keyboard.keyPressed ) {
-			dispatchNoteOff( keyboard, key.dataset.index );
-		}
+		dispatchNoteOff( keyboard, key.dataset.index );
 
 	}
 
@@ -105,9 +103,7 @@
 
 		var index = findKeyIndex( keyboard, e );
 
-		if( keyboard.keyPressed ) {
-			return;
-		}
+		// TODO might want to check if it's checked already to prevent the multiple events being fired?
 
 		if( index === -1 || e.altKey || e.altGraphKey || e.ctrlKey || e.metaKey || e.shiftKey ) {
 			// no further processing
@@ -124,10 +120,21 @@
 		var index = findKeyIndex( keyboard, e );
 
 		// Only fire key up if the key is in the defined layout
+		// TODO: maybe move this check to onKeyDown?
 		if( index !== -1 ) {
 			dispatchNoteOff( keyboard, index );
 		}
 
+	}
+
+
+	function isKeyPressed(keyboard, index) {
+		return keyboard.pressedKeys[index];
+	}
+
+
+	function setKeyPressed(keyboard, index, pressed) {
+		keyboard.pressedKeys[index] = pressed;
 	}
 
 
@@ -149,29 +156,40 @@
 
 	function dispatchNoteOn( keyboard, index ) {
 
-		keyboard.keyPressed = true;
-
 		var key = keyboard.keys[index],
 			currentClass = key.className;
 
+		if(isKeyPressed(keyboard, index)) {
+			// Already pressed, are we mouseclicking and keyboarding
+			// at the same time?
+			console.log('already pressed', index);
+			return;
+		}
+
+		setKeyPressed(keyboard, index, true);
 		key.classList.add('active');
 
 		var evt = makeEvent('noteon', { index: index });
 		keyboard.dispatchEvent(evt);
-
+	
 	}
 
 
 	function dispatchNoteOff( keyboard, index ) {
 
-		var activeKey = keyboard.querySelector( '.active' );
+		var key = keyboard.keys[index];
 
-		if( activeKey ) {
-			activeKey.classList.remove('active');
+		if(!isKeyPressed(keyboard, index)) {
+			// TODO ghost note offs!? maybe if we press down on one key but
+			// release the mouse in another key?
+			console.error('this key is not pressed', index);
+			return;
 		}
 
-		keyboard.keyPressed = false;
+		key.classList.remove('active');
 
+		setKeyPressed(keyboard, index, false);
+		
 		var evt = makeEvent('noteoff', { index: index });
 		keyboard.dispatchEvent(evt);
 
