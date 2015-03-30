@@ -167,41 +167,6 @@
 		
 	}
 
-
-
-	/*
-	proto.attachTo = function(analyser) {
-		console.log('attached to analyser node', analyser);
-
-		var bufferLength = analyser.frequencyBinCount;
-		var resultsArray = new Float32Array(bufferLength);
-		var self = this;
-
-		animate();
-
-		function animate() {
-
-			requestAnimationFrame(animate);
-
-			analyser.getFloatTimeDomainData(resultsArray);
-
-			self.resetCanvas();
-			renderWaveData(self.canvas, resultsArray);
-			
-		}
-
-	};
-
-	proto.resetCanvas = function() {
-		var ctx = this.context;
-		var canvas = this.canvas;
-
-		ctx.fillStyle = 'rgba(0, 50, 0, 1)';
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-	};
-
-	*/
-
 	//
 
 	var component = {};
