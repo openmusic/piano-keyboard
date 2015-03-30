@@ -137,6 +137,10 @@
 
 	}
 
+	function makeEvent(type, detailData) {
+		return new CustomEvent(type, { detail: detailData });
+	}
+
 
 	function dispatchNoteOn( keyboard, index ) {
 
@@ -147,11 +151,7 @@
 
 		key.classList.add('active');
 
-		var evt = new CustomEvent('noteon', {
-			detail: {
-				index: index 
-			}
-		});
+		var evt = makeEvent('noteon', { index: index });
 		keyboard.dispatchEvent(evt);
 
 	}
@@ -167,9 +167,10 @@
 
 		keyboard.keyPressed = false;
 
-		var evt = new CustomEvent('noteoff');
+		var evt = makeEvent('noteoff');
 		keyboard.dispatchEvent(evt);
-		
+
+		// TODO should tell which key was released also-for multitimbral synths!
 	}
 
 	//
