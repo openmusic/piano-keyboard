@@ -59,7 +59,10 @@
 			}
 		}
 
-		kb.tabIndex = 1; // TODO what if there's more than one keyboard?
+		// Even if we set tabIndex here, the browser is smart enough to
+		// let us cycle between keyboards when there's more than one on screen
+		// at the same time, by pressing TAB
+		kb.tabIndex = 1;
 		kb.addEventListener('keydown', makeCallback(kb, onKeyDown), false);
 		kb.addEventListener('keyup', makeCallback(kb, onKeyUp), false);
 	}
