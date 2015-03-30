@@ -147,8 +147,11 @@
 
 		key.classList.add('active');
 
-		var evt = document.createEvent('CustomEvent');
-		evt.initCustomEvent('noteon', false, false, { index: index });
+		var evt = new CustomEvent('noteon', {
+			detail: {
+				index: index 
+			}
+		});
 		keyboard.dispatchEvent(evt);
 
 	}
@@ -164,8 +167,7 @@
 
 		keyboard.keyPressed = false;
 
-		var evt = document.createEvent('CustomEvent');
-		evt.initCustomEvent('noteoff', false, false, null);
+		var evt = new CustomEvent('noteoff');
 		keyboard.dispatchEvent(evt);
 		
 	}
