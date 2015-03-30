@@ -92,8 +92,10 @@
 
 	function onDivMouseUp( keyboard, ev ) {
 
+		var key = ev.target;
+
 		if( keyboard.keyPressed ) {
-			dispatchNoteOff( keyboard );
+			dispatchNoteOff( keyboard, key.dataset.index );
 		}
 
 	}
@@ -119,9 +121,11 @@
 
 	function onKeyUp( keyboard, e ) {
 
+		var index = findKeyIndex( keyboard, e );
+
 		// Only fire key up if the key is in the defined layout
-		if( findKeyIndex( keyboard, e ) !== -1 ) {
-			dispatchNoteOff( keyboard );
+		if( index !== -1 ) {
+			dispatchNoteOff( keyboard, index );
 		}
 
 	}
@@ -136,6 +140,7 @@
 		return index;
 
 	}
+
 
 	function makeEvent(type, detailData) {
 		return new CustomEvent(type, { detail: detailData });
@@ -157,7 +162,7 @@
 	}
 
 
-	function dispatchNoteOff( keyboard ) {
+	function dispatchNoteOff( keyboard, index ) {
 
 		var activeKey = keyboard.querySelector( '.active' );
 
@@ -167,10 +172,9 @@
 
 		keyboard.keyPressed = false;
 
-		var evt = makeEvent('noteoff');
+		var evt = makeEvent('noteoff', { index: index });
 		keyboard.dispatchEvent(evt);
 
-		// TODO should tell which key was released also-for multitimbral synths!
 	}
 
 	//
