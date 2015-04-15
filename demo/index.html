@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf8">
+		<meta name="viewport" content="width=device-width">
+		<title>piano keyboard demo</title>
+		<link rel="stylesheet" href="../Piano-Keyboard.css">
+		<script src="webcomponents-lite.js" defer></script>
+		<script src="../Piano-Keyboard.js" defer></script>
+		<script src="demo.js" defer></script>
+	</head>
+	<body>
+		<h1>piano keyboard demo</h1>
+		<h2>works best in landscape (when in phones)</h2>
+		
+		<p><openmusic-piano-keyboard id="small" octaves="1"></openmusic-piano-keyboard></p>
+		<p>
+			<openmusic-piano-keyboard id="full" octaves="2"></openmusic-piano-keyboard>
+			<span id="fullEvents">events dispatched by this keyboard will show up here</span>
+		</p>
+
+	</body>
+</html>
+
